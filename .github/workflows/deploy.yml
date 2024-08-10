@@ -1,0 +1,61 @@
+name: Deploy React.js site to Pages
+on:
+  push:
+    # main
+    branches: ["main"]
+
+  #
+  workflow_dispatch:
+
+# GITHUB_TOKEN GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# workflow
+concurrency:
+  group: ${{ github.repository }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout respository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build project
+        run: bun run build
+        env:
+          GITHUB_PAGES: true
+
+      - name: Upload production-ready build files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: ./dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
