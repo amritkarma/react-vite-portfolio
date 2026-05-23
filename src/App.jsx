@@ -9,30 +9,23 @@ import Services from './components/Services'
 import Skills from './components/Skills'
 import TopButton from './components/TopButton'
 
+function getInitialTheme() {
+  return localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+}
+
 function App() {
-  const [lightdark, setLightDark] = useState(false)
+  const [lightdark, setLightDark] = useState(getInitialTheme)
   const [menuopen, setMenuOpen] = useState(false)
+
   useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark')
-      setLightDark(true)
-    } else {
-      document.documentElement.classList.remove('dark')
-      setLightDark(false)
-    }
+    document.documentElement.classList.toggle('dark', lightdark)
+    localStorage.theme = lightdark ? 'dark' : 'light'
   }, [lightdark])
 
   function lightdarkmode() {
-    if (!localStorage.theme || localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.remove('dark')
-      localStorage.theme = 'light'
-      setLightDark(false)
-    } else {
-      document.documentElement.classList.add('dark')
-      localStorage.theme = 'dark'
-      setLightDark(true)
-    }
+    setLightDark((currentTheme) => !currentTheme)
   }
+
   function menuOpen() {
     if (!menuopen) {
       setMenuOpen(true)

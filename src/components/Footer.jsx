@@ -1,4 +1,3 @@
-import React from 'react'
 import { RiFacebookBoxFill, RiGithubFill, RiInstagramFill, RiLinkedinBoxFill, RiTwitterXFill } from 'react-icons/ri'
 
 function Footer() {

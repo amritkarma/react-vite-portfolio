@@ -1,5 +1,3 @@
-import React from 'react'
-
 function Skills() {
   return (
     <section className="w-fill px-4 lg:px-0 py-24" id='Skills'>

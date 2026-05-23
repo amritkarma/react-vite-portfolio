@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-scroll'
 import { HiBars3, HiBolt, HiOutlineMoon, HiOutlineSun, HiXMark } from 'react-icons/hi2'
 import { RiGithubFill } from 'react-icons/ri'
